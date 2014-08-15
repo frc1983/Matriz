@@ -1,0 +1,23 @@
+﻿@using Prova.ViewModel;
+@model Prova.ViewModel.MatrixViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<table>
+    <tbody>
+
+    </tbody>
+</table>
+@foreach (var m in Model.matrix) {
+    for (int i = 0; i < Model.matrix.GetLength(0); i++)
+    {
+        for (int j = 0; j < Model.matrix.GetLength(1); j++)
+        {
+            @String.Format(" {0} |", m.IsChecked.ToString());
+        }
+        <br />
+    }
+}
