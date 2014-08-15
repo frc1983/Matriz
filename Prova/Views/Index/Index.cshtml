@@ -2,22 +2,67 @@
 @model Prova.ViewModel.MatrixViewModel
 
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
-<table>
-    <tbody>
+<div id="container"></div>
 
-    </tbody>
-</table>
-@foreach (var m in Model.matrix) {
-    for (int i = 0; i < Model.matrix.GetLength(0); i++)
-    {
-        for (int j = 0; j < Model.matrix.GetLength(1); j++)
-        {
-            @String.Format(" {0} |", m.IsChecked.ToString());
-        }
-        <br />
+<textarea id="log"></textarea>
+
+<input type="number" id="interval" />
+<input id="pause" type="button" value="pause" />
+<input id="start" type="button" value="start" />
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        @*$.ajax({
+            dataType: "json",
+            url: '@Url.Action("DrawTable")',
+            success: function (data) {
+                $("#container").html(data);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });*@
+        
+        var timer = null;        
+
+        $("#start").click(function () {
+            var interval = $("#interval").val();
+            if (timer !== null) return;
+            if (interval < 1 || interval > 60) {
+                alert("O intervalo deve estar entre 1 e 60");
+            }
+
+            timer = setInterval(CallPopulateMatrix, interval);
+        });
+
+        $("#pause").click(function () {
+            clearInterval(timer);
+            timer = null;
+        });
+    });
+
+    function CallPopulateMatrix() {
+        $.ajax({
+            dataType: "json",
+            async: true,
+            url: '@Url.Action("PopulateMatrix")',
+            success: function (data) {
+                $("#container").html(data.Html);
+
+                var txt = $("#log");
+                txt.val(txt.val() + data.Log);
+
+                if (data.Complete == "True")
+                    $("#pause").trigger("click");
+            },
+            error: function (data) {
+                alert("Nenhum dado recebido.");
+            }
+        });
     }
-}
+</script>
