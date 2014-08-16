@@ -11,10 +11,10 @@ namespace Prova.Util
     {
         public static void BuildHeader(MatrixViewModel matrixVM)
         {
-            matrixVM.Html.Append("<thead><th></th>");
+            matrixVM.Html.Append("<thead><th class='black'></th>");
             for (int i = 0; i < matrixVM.Matrix.GetLength(0); i++)
             {
-                matrixVM.Html.Append("<th> " + i + "</th>");
+                matrixVM.Html.Append("<th> " + (i + 1) + "</th>");
             }
             matrixVM.Html.Append("</thead>");
         }

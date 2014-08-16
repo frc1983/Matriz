@@ -17,6 +17,9 @@ namespace Prova.Controllers
         public ActionResult Index()
         {
             matrixVM = new MatrixViewModel();
+            matrixVM.Html = new StringBuilder();
+            matrixVM.Log = new StringBuilder();
+
             TempData["matrixVM"] = matrixVM;
             TempData.Keep("matrixVM");
 
@@ -30,27 +33,42 @@ namespace Prova.Controllers
 
             if (!matrixVM.IsComplete(matrixVM.Log))
                 if (!matrixVM.Matrix[tuple.Item1, tuple.Item2].Checked)
+                {
                     matrixVM.Matrix[tuple.Item1, tuple.Item2].Checked = true;
+                    matrixVM.Log.AppendLine(String.Format("L{0},C{1} - {2}", tuple.Item1 + 1, tuple.Item2 + 1, DateTime.Now.ToString("H:mm:ss.ffff")));
+                }
 
-            return DrawTable();
+            return DrawTable(true);
         }        
 
-        public JsonResult DrawTable()
+        public JsonResult DrawTable(bool? update)
         {
+            if(!update.HasValue)
+                GetMatrix();
+
             matrixVM.Html = new StringBuilder();
-            matrixVM.Log = new StringBuilder();
 
             matrixVM.Html.Append("<table>");
             ConstructTable.BuildHeader(matrixVM);
+            matrixVM.Html.Append("<tbody>");
             
             for (int i = 0; i < matrixVM.Matrix.GetLength(0); i++)
             {
-                matrixVM.Html.Append("<tbody><tr " + (matrixVM.IsCompleteLine(i, matrixVM.Log) ? "class='complete'" : "") + "><td> " + i + "</td>");
+                matrixVM.Html.Append("<tr " + (matrixVM.IsCompleteLine(i, matrixVM.Log) ? "class='complete'" : "") + "><td class='lightGray'> " + (i + 1) + "</td>");
+                if (matrixVM.IsCompleteLine(i, matrixVM.Log) && !matrixVM.CompleteLines.Contains(i))
+                {
+                    matrixVM.CompleteLines.Add(i);
+                    matrixVM.Log.AppendLine(String.Format("LINHA {0} completa!", i));
+                }
 
                 for (int j = 0; j < matrixVM.Matrix.GetLength(1); j++)
                 {
                     matrixVM.Html.Append("<td " + (matrixVM.IsCompleteColumn(j, matrixVM.Log) ? "class='complete'" : "") + ">" + matrixVM.Matrix[i, j].IsChecked + "</td>");
-                    matrixVM.Log.AppendLine(String.Format("Marcado em linha {0} e coluna {1}", i, j));                    
+                    if (matrixVM.IsCompleteLine(j, matrixVM.Log) && !matrixVM.CompleteColumns.Contains(j))
+                    {
+                        matrixVM.CompleteColumns.Add(j);
+                        matrixVM.Log.AppendLine(String.Format("COLUNA {0} completa!", j));
+                    }
                 }
 
                 matrixVM.Html.Append("</tr>");

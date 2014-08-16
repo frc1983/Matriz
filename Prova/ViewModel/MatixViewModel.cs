@@ -15,6 +15,8 @@ namespace Prova.ViewModel
         public StringBuilder Html { get; set; }
         public StringBuilder Log { get; set; }
         public List<Tuple<int, int>> PossibleValues { get; set; }
+        public List<int> CompleteLines { get; set; }
+        public List<int> CompleteColumns { get; set; }
 
         #endregion
 
@@ -33,6 +35,8 @@ namespace Prova.ViewModel
         {
             Matrix = new Cell[10, 10];
             PossibleValues = new List<Tuple<int, int>>();
+            CompleteLines = new List<int>();
+            CompleteColumns = new List<int>();
 
             for (int i = 0; i < Matrix.GetLength(0); i++)
                 for (int j = 0; j < Matrix.GetLength(1); j++)
@@ -49,7 +53,7 @@ namespace Prova.ViewModel
                 if (!this.Matrix[line, j].Checked)
                     return false;
             }
-            log.AppendLine(String.Format("Linha {0} completa", line));
+            //log.AppendLine(String.Format("LINHA {0} completa!", line));
             return true;
         }
 
@@ -60,7 +64,7 @@ namespace Prova.ViewModel
                 if (!this.Matrix[i, column].Checked)
                     return false;
             }
-            log.AppendLine(String.Format("Coluna {0} completa", column));
+            //log.AppendLine(String.Format("LINHA {0} completa!", column));
             return true;
         }
 
@@ -71,7 +75,6 @@ namespace Prova.ViewModel
                     if (!this.Matrix[i, j].Checked)
                         return false;
 
-            log.AppendLine("Matriz completa");
             return true;
         }
 
