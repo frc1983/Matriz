@@ -49,22 +49,18 @@ namespace Prova.ViewModel
         public bool IsCompleteLine(int line, StringBuilder log)
         {
             for (int j = 0; j < this.Matrix.GetLength(1); j++)
-            {
                 if (!this.Matrix[line, j].Checked)
                     return false;
-            }
-            //log.AppendLine(String.Format("LINHA {0} completa!", line));
+
             return true;
         }
 
         public bool IsCompleteColumn(int column, StringBuilder log)
         {
             for (int i = 0; i < this.Matrix.GetLength(0); i++)
-            {
                 if (!this.Matrix[i, column].Checked)
                     return false;
-            }
-            //log.AppendLine(String.Format("LINHA {0} completa!", column));
+
             return true;
         }
 

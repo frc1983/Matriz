@@ -35,7 +35,7 @@ namespace Prova.Controllers
                 if (!matrixVM.Matrix[tuple.Item1, tuple.Item2].Checked)
                 {
                     matrixVM.Matrix[tuple.Item1, tuple.Item2].Checked = true;
-                    matrixVM.Log.AppendLine(String.Format("L{0},C{1} - {2}", tuple.Item1 + 1, tuple.Item2 + 1, DateTime.Now.ToString("H:mm:ss.ffff")));
+                    LogHelper.LogCheck(matrixVM, tuple.Item1 + 1, tuple.Item2 + 1, DateTime.Now);
                 }
 
             return DrawTable(true);
@@ -47,32 +47,10 @@ namespace Prova.Controllers
                 GetMatrix();
 
             matrixVM.Html = new StringBuilder();
-
             matrixVM.Html.Append("<table>");
             ConstructTable.BuildHeader(matrixVM);
             matrixVM.Html.Append("<tbody>");
-            
-            for (int i = 0; i < matrixVM.Matrix.GetLength(0); i++)
-            {
-                matrixVM.Html.Append("<tr " + (matrixVM.IsCompleteLine(i, matrixVM.Log) ? "class='complete'" : "") + "><td class='lightGray'> " + (i + 1) + "</td>");
-                if (matrixVM.IsCompleteLine(i, matrixVM.Log) && !matrixVM.CompleteLines.Contains(i))
-                {
-                    matrixVM.CompleteLines.Add(i);
-                    matrixVM.Log.AppendLine(String.Format("LINHA {0} completa!", i));
-                }
-
-                for (int j = 0; j < matrixVM.Matrix.GetLength(1); j++)
-                {
-                    matrixVM.Html.Append("<td " + (matrixVM.IsCompleteColumn(j, matrixVM.Log) ? "class='complete'" : "") + ">" + matrixVM.Matrix[i, j].IsChecked + "</td>");
-                    if (matrixVM.IsCompleteLine(j, matrixVM.Log) && !matrixVM.CompleteColumns.Contains(j))
-                    {
-                        matrixVM.CompleteColumns.Add(j);
-                        matrixVM.Log.AppendLine(String.Format("COLUNA {0} completa!", j));
-                    }
-                }
-
-                matrixVM.Html.Append("</tr>");
-            }
+            ConstructTable.BuildBody(matrixVM);            
             matrixVM.Html.Append("</tbody></table>");
 
             var result = new { Html = matrixVM.Html.ToString(), Log = matrixVM.Log.ToString(), Complete = matrixVM.IsComplete(matrixVM.Log).ToString() };

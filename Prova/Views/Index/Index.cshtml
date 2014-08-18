@@ -28,7 +28,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         DrawTable();
-        var timer = null;
+        var timer = null;        
 
         $("#start").click(function () {
             if (timer !== null) return;
@@ -40,7 +40,7 @@
                 return;
             }
 
-            timer = setInterval(CallPopulateMatrix, interval);
+            timer = setInterval(CallPopulateMatrix, interval * 1000);
         });
 
         $("#pause").click(function () {
@@ -60,6 +60,7 @@
             url: '@Url.Action("PopulateMatrix")',
             success: function (data) {
                 $("#container").html(data.Html);
+                ScrollToBottom();
 
                 var txt = $("#log");
                 txt.val(data.Log);
@@ -80,10 +81,17 @@
             url: '@Url.Action("DrawTable")',
                 success: function (data) {
                     $("#container").html(data.Html);
+                    ScrollToBottom();
                 },
-                error: function (data) {
+                error: function () {
                     alert("Nenhum dado recebido.");
                 }
             });
-        }
+    }
+
+    function ScrollToBottom() {
+        $("#log").animate({
+            scrollTop: ($("#log")[0].scrollHeight + 5) - $("#log").height()
+        }, 10);
+    }
 </script>

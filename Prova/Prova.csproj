@@ -126,8 +126,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Cell.cs" />
+    <Compile Include="Models\EnumFillMatrixType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\ConstructTable.cs" />
+    <Compile Include="Util\LogHelper.cs" />
     <Compile Include="Util\Tuples.cs" />
     <Compile Include="ViewModel\MatixViewModel.cs" />
   </ItemGroup>
