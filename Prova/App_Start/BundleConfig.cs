@@ -16,7 +16,7 @@ namespace Prova.App_Start
             bundles.Add(new StyleBundle("~/bundles/style").Include(
                         "~/Styles/style.css"));
 
-            //BundleTable.EnableOptimizations = true;
+            BundleTable.EnableOptimizations = true;
         }
     }
 }

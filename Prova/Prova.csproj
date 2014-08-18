@@ -128,10 +128,10 @@
     <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\EnumFillMatrixType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\ConstructTable.cs" />
-    <Compile Include="Util\LogHelper.cs" />
-    <Compile Include="Util\Tuples.cs" />
-    <Compile Include="ViewModel\MatixViewModel.cs" />
+    <Compile Include="Utils\ConstructTable.cs" />
+    <Compile Include="Utils\LogHelper.cs" />
+    <Compile Include="Utils\Tuples.cs" />
+    <Compile Include="ViewModels\MatixViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
